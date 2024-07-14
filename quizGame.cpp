@@ -10,9 +10,9 @@ int main() {
     char playAgain;
     do {
         startQuiz();
-        std::cout << "Do you want to play again? (y/n): ";
-        std::cin >> playAgain;
-    } while (playAgain == 'y' || playAgain == 'Y');
+        cout << "Do you want to play again? (y/n): ";
+        cin >> playAgain;
+    } while (playAgain = 'y' || playAgain == 'Y');
 
     std::cout << "Thanks for playing the quiz game! Goodbye!" << std::endl;
     return 0;
@@ -46,7 +46,7 @@ void startQuiz() {
 void displayQuestion(const std::string& question, const std::string& answer, int& score) {
     std::string userAnswer;
     std::cout << question << std::endl;
-    std::cout << "Your answer: ";
+    scout << "Your answer: ";
     std::cin >> userAnswer;
 
     if (userAnswer == answer) {
