@@ -1,0 +1,154 @@
+Creating a calculator with a graphical user interface (GUI) can be a fun and educational project for a sixth grader. Here's a step-by-step guide using the Qt framework, which is relatively beginner-friendly and widely used for C++ GUI development.
+
+Step-by-Step Guide
+Prerequisites:
+Install Qt: Download and install the Qt framework from the official Qt website. The Qt Creator IDE is included, which simplifies the development process.
+Steps:
+Set Up Qt Creator:
+
+Open Qt Creator.
+Create a new project: File > New File or Project > Application > Qt Widgets Application.
+Follow the prompts to set up your project. Choose a suitable project name, directory, and kit (compiler).
+Design the Calculator Interface:
+
+In the Design mode, drag and drop widgets (buttons, line edits) from the widget box to design the calculator layout.
+Arrange buttons for digits (0-9), operations (+, -, *, /), and a display (QLineEdit) for the input/output.
+Assign Object Names:
+
+Assign object names to the widgets (e.g., btn1 for button 1, btnAdd for the addition button, display for the line edit).
+Connect Signals and Slots:
+
+Go to the Slots section in the Design mode.
+Right-click on each button, choose Slot > Clicked(), and connect each button to a function that handles the respective input or operation.
+Write the C++ Code:
+
+Switch to Edit mode to write the logic for the calculator.
+Implement the slots to handle button clicks, perform calculations, and update the display.
+Here's a simple example of the main parts of the code:
+
+Header File (mainwindow.h):
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
+private slots:
+    void digit_pressed();
+    void on_btnAdd_clicked();
+    void on_btnSubtract_clicked();
+    void on_btnMultiply_clicked();
+    void on_btnDivide_clicked();
+    void on_btnEquals_clicked();
+    void on_btnClear_clicked();
+
+private:
+    Ui::MainWindow *ui;
+    double firstNum;
+    bool userIsTypingSecondNumber;
+};
+
+#endif // MAINWINDOW_H
+
+Source File (mainwindow.cpp):
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    connect(ui->btn0, SIGNAL(released()), this, SLOT(digit_pressed()));
+    connect(ui->btn1, SIGNAL(released()), this, SLOT(digit_pressed()));
+    connect(ui->btn2, SIGNAL(released()), this, SLOT(digit_pressed()));
+    // Connect other digit buttons similarly
+
+    connect(ui->btnAdd, SIGNAL(released()), this, SLOT(on_btnAdd_clicked()));
+    connect(ui->btnSubtract, SIGNAL(released()), this, SLOT(on_btnSubtract_clicked()));
+    connect(ui->btnMultiply, SIGNAL(released()), this, SLOT(on_btnMultiply_clicked()));
+    connect(ui->btnDivide, SIGNAL(released()), this, SLOT(on_btnDivide_clicked()));
+    connect(ui->btnEquals, SIGNAL(released()), this, SLOT(on_btnEquals_clicked()));
+    connect(ui->btnClear, SIGNAL(released()), this, SLOT(on_btnClear_clicked()));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::digit_pressed()
+{
+    QPushButton *button = (QPushButton*)sender();
+    double labelNumber;
+    QString newLabel;
+
+    if((ui->btnAdd->isChecked() || ui->btnSubtract->isChecked() || ui->btnMultiply->isChecked() || ui->btnDivide->isChecked()) && (!userIsTypingSecondNumber))
+    {
+        labelNumber = button->text().toDouble();
+        userIsTypingSecondNumber = true;
+        newLabel = QString::number(labelNumber, 'g', 15);
+    }
+    else
+    {
+        if(ui->display->text().contains('.') && button->text() == "0")
+        {
+            newLabel = ui->display->text() + button->text();
+        }
+        else
+        {
+            labelNumber = (ui->display->text() + button->text()).toDouble();
+            newLabel = QString::number(labelNumber, 'g', 15);
+        }
+    }
+    ui->display->setText(newLabel);
+}
+
+void MainWindow::on_btnAdd_clicked()
+{
+    firstNum = ui->display->text().toDouble();
+    ui->display->setText("");
+    ui->btnAdd->setChecked(true);
+}
+
+// Similarly implement slots for subtraction, multiplication, and division
+
+void MainWindow::on_btnEquals_clicked()
+{
+    double secondNum, result;
+    secondNum = ui->display->text().toDouble();
+
+    if(ui->btnAdd->isChecked())
+    {
+        result = firstNum + secondNum;
+        ui->btnAdd->setChecked(false);
+    }
+    // Similarly handle subtraction, multiplication, and division
+
+    ui->display->setText(QString::number(result, 'g', 15));
+    userIsTypingSecondNumber = false;
+}
+
+void MainWindow::on_btnClear_clicked()
+{
+    ui->btnAdd->setChecked(false);
+    ui->btnSubtract->setChecked(false);
+    ui->btnMultiply->setChecked(false);
+    ui->btnDivide->setChecked(false);
+
+    userIsTypingSecondNumber = false;
+
+    ui->display->setText("0");
+}

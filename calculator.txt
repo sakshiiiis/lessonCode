@@ -1,0 +1,66 @@
+#include <iostream>
+
+// Function prototypes
+int add(int a, int b);
+int subtract(int a, int b);
+int multiply(int a, int b);
+double divide(int a, int b);
+int modulus(int a, int b);
+
+int main() {
+    int a, b;
+    // Ask the user to pick a number and get input
+    std::cout << "Pick a number (a): ";
+    std::cin >> a;
+
+    // Ask the user to pick another number and get input
+    std::cout << "Pick another number (b): ";
+    std::cin >> b;
+    
+    // Perform operations
+    int sum = add(a, b);
+    int difference = subtract(a, b);
+    int product = multiply(a, b);
+    double quotient = divide(a, b);
+    int remainder = modulus(a, b);
+    
+    // Output the results
+    std::cout << "The sum is: " << sum << std::endl;
+    std::cout << "The difference is: " << difference << std::endl;
+    std::cout << "The product is: " << product << std::endl;
+    std::cout << "The quotient is: " << quotient << std::endl;
+    std::cout << "The remainder is: " << remainder << std::endl;
+
+    return 0;
+}
+
+// Function definitions
+int add(int a, int b) {
+    return a + b;
+}
+
+int subtract(int a, int b) {
+    return a - b;
+}
+
+int multiply(int a, int b) {
+    return a * b;
+}
+
+double divide(int a, int b) {
+    if (b != 0)
+        return static_cast<double>(a) / b;
+    else {
+        std::cout << "Error: Division by zero!" << std::endl;
+        return 0;
+    }
+}
+
+int modulus(int a, int b) {
+    if (b != 0)
+        return a % b;
+    else {
+        std::cout << "Error: Division by zero!" << std::endl;
+        return 0;
+    }
+}
