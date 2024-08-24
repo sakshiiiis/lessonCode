@@ -1,0 +1,54 @@
+Set Up the Basic Structure of the C++ Program
+
+Begin by creating a new C++ program with a basic structure, including the main() function.
+Include the Necessary Libraries
+
+Include the <windows.h> library, which provides the Sleep function:
+    #include <windows.h>
+
+Create Variables for User Input
+
+Declare variables to hold the user’s inputs for Hours, Minutes, and Seconds. These variables will be used to set the countdown timer.
+Get User Input for the Timer
+
+Use a while loop to prompt the user to input values for Hours, Minutes, and Seconds.
+Inside the loop, introduce an if statement to ensure the user input is valid.
+If the input is invalid, prompt the user to re-enter the values.
+If the input is valid, use break; to exit the loop.
+Create the Countdown Timer Logic
+
+Add another while loop with a condition that will continue running until the timer reaches 0 for Hours, Minutes, and Seconds.
+Inside this loop:
+Use system("cls"); to clear the output screen before displaying the timer.
+Display the current time remaining in the format Hour : Minute : Seconds.
+Use the Sleep(1000); function to pause the program for 1 second, creating the countdown effect.
+Countdown Logic
+
+Implement the countdown logic within the loop:
+If Seconds is greater than 0, decrement Seconds.
+If Seconds is 0 but Minutes is greater than 0, set Seconds to 59 and decrement Minutes.
+If both Minutes and Seconds are 0 but Hours is greater than 0, set Minutes to 59, Seconds to 59, and decrement Hours.
+End the Countdown
+
+Example Code: 
+
+    While loop {
+        system("cls"); // clear the screen
+        // display hour : minute : seconds 
+        Sleep(1000); // pauses the program for 1 second 
+
+        if (second >0){
+            second --;
+        }
+        else if (minute > 0){
+            second = 59;
+            minute--;
+        }
+        else if (hour >0){
+            minute = 59;
+            seconds 59;
+            hour --;
+        }
+    }
+
+// Additional Code here
