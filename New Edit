@@ -1,0 +1,93 @@
+const gridContainer = document.querySelector(".grid-container");
+let cards = [];
+let firstCard, secondCard;
+let lockBoard = false;
+let score = 0;
+let selectedColor = "white"; // Default background color
+let selectedImage = "default-card-back.jpg"; // Default card back image
+
+document.querySelector(".score").textContent = score;
+
+// New: Initial Screen Setup
+showHomeScreen();
+
+// New: Home Screen function to display the Home Screen initially
+function showHomeScreen() {
+  document.querySelector("#homeScreen").classList.add("active");
+  document.querySelector("#customizationScreen").classList.remove("active");
+  document.querySelector("#gameScreen").classList.remove("active");
+}
+
+// New: Function to show the Customization Screen
+function showCustomizationScreen() {
+  document.querySelector("#homeScreen").classList.remove("active");
+  document.querySelector("#customizationScreen").classList.add("active");
+  document.querySelector("#gameScreen").classList.remove("active");
+}
+
+// New: Function to start the game with selected customizations
+function startGame() {
+  document.querySelector("#homeScreen").classList.remove("active");
+  document.querySelector("#customizationScreen").classList.remove("active");
+  document.querySelector("#gameScreen").classList.add("active");
+
+  // Apply customizations
+  document.body.style.backgroundColor = selectedColor;
+  document.querySelectorAll(".card-back").forEach(card => {
+    card.style.backgroundImage = `url(${selectedImage})`;
+  });
+
+  // Fetch and initialize cards
+  fetch("./data/cards.json")
+    .then((res) => res.json())
+    .then((data) => {
+      cards = [...data, ...data];
+      shuffleCards();
+      generateCards();
+    });
+}
+
+// New: Select color and save it
+function selectColor(color) {
+  selectedColor = color;
+}
+
+// New: Select image and save it
+function selectImage(image) {
+  selectedImage = image;
+}
+
+// Shuffle cards as in your original code
+function shuffleCards() {
+  let currentIndex = cards.length,
+    randomIndex,
+    temporaryValue;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = cards[currentIndex];
+    cards[currentIndex] = cards[randomIndex];
+    cards[randomIndex] = temporaryValue;
+  }
+}
+
+// Generate cards with the selected background image applied to card backs
+function generateCards() {
+  gridContainer.innerHTML = ""; // Clear existing cards
+  for (let card of cards) {
+    const cardElement = document.createElement("div");
+    cardElement.classList.add("card");
+    cardElement.setAttribute("data-name", card.name);
+    cardElement.innerHTML = `
+      <div class="front">
+        <img class="front-image" src=${card.image} />
+      </div>
+      <div class="back card-back" style="background-image: url(${selectedImage});"></div> <!-- Apply selected background image here -->
+    `;
+    gridContainer.appendChild(cardElement);
+    cardElement.addEventListener("click", flipCard);
+  }
+}
+
+// Rest of your original game logic (flipCard, checkForMatch, etc.) remains the same
+// ...
